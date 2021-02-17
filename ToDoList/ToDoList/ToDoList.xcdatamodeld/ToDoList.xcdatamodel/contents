@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="19F101" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="TodoMaster" representedClassName="TodoMaster" syncable="YES" codeGenerationType="class">
-        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="dscription" optional="YES" attributeType="String"/>
-        <attribute name="time" optional="YES" attributeType="String"/>
-        <attribute name="title" optional="YES" attributeType="String"/>
+    <entity name="Todomaster" representedClassName="Todomaster" syncable="YES" codeGenerationType="class">
+        <attribute name="tododate" optional="YES" attributeType="String"/>
+        <attribute name="tododscription" optional="YES" attributeType="String"/>
+        <attribute name="todoid" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="todotime" optional="YES" attributeType="String"/>
+        <attribute name="todotitle" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="TodoMaster" positionX="-63" positionY="-18" width="128" height="103"/>
+        <element name="Todomaster" positionX="-63" positionY="-18" width="128" height="118"/>
     </elements>
 </model>
