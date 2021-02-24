@@ -118,8 +118,6 @@ class DBHelperCoreData {
         {
             print(error)
         }
-        
-        
     }
     
     func deleteRecordByTodoId(todoId: Int) {

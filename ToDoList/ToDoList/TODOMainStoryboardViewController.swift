@@ -20,6 +20,7 @@ class TODOMainStoryboardViewController: UIViewController, UITableViewDelegate , 
         tblOutlettodoDisplay.dataSource = self
         tblOutlettodoDisplay.delegate = self
         super.viewDidLoad()
+     
         
 //        dicToDo = ["todotitle" : "Reading" , "tododscription" : "dfgdf fdfgsdfgsd" , "tododate": "2021-02-18" , "todotime" : "08:00:00"]
 //        //dbHelper.insertData(object: dicToDo)
@@ -32,6 +33,7 @@ class TODOMainStoryboardViewController: UIViewController, UITableViewDelegate , 
         // Do any additional setup after loading the view.
     }
     
+  
     override func viewWillAppear(_ animated: Bool) {
         
         dicToDo = ["todotitle" : "Reading" , "tododscription" : "dfgdf fdfgsdfgsd" , "tododate": "2021-02-18" , "todotime" : "08:00:00"]
