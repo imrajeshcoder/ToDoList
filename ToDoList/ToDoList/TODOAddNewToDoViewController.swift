@@ -30,22 +30,32 @@ class TODOAddNewToDoViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-     
+        btnOutletInsertOrSave.layer.cornerRadius = 10
         txtoutletToDoTitle.text = strToDoTitle
+        txtOutletToDoDiscription.layer.borderWidth = 0.5
+        txtOutletToDoDiscription.layer.borderColor = UIColor.black.cgColor
+        txtoutletToDoTitle.layer.borderWidth = 0.5
+        txtoutletToDoTitle.layer.borderColor = UIColor.black.cgColor
         txtOutletToDoDiscription.text = strToDoDescription
+        txtOutletToDoDate.layer.borderWidth = 0.5
+        txtOutletToDoDate.layer.borderColor = UIColor.black.cgColor
+        txtOutletToDoTime.layer.borderWidth = 0.5
+        txtOutletToDoTime.layer.borderColor = UIColor.black.cgColor
         txtOutletToDoDate.text = strToDoDate
         txtOutletToDoTime.text = strToDoTime
         if(isEditingToDo)
         {
             print("Todo Edit")
             btnOutletInsertOrSave.setTitle("Save", for: .normal)
+            self.title = "Edit Todo"
         }
         else
         {
             print("New ToDO ADD")
-            txtOutletToDoDiscription.text = "Enter ToDo Discription"
-            txtOutletToDoDiscription.textColor = UIColor.lightGray
+          //  txtOutletToDoDiscription.text = "Enter ToDo Discription"
+          //  txtOutletToDoDiscription.textColor = UIColor.lightGray
             btnOutletInsertOrSave.setTitle("Add", for: .normal)
+            self.title = "Add Todo"
         }
         
         datePicker.datePickerMode = .date
@@ -70,11 +80,7 @@ class TODOAddNewToDoViewController: UIViewController, UITextViewDelegate {
         txtOutletToDoDate.inputAccessoryView = toolBar
         txtOutletToDoTime.inputAccessoryView = toolBar
     }
-    
-    
-    
-    
-    
+
     @objc func cancelDate()
     {
         
@@ -114,31 +120,57 @@ class TODOAddNewToDoViewController: UIViewController, UITextViewDelegate {
     }
      
     @IBAction func btnActionAddOrSaveTouchUp(_ sender: UIButton) {
-        dicToDo = ["todotitle" : "\(txtoutletToDoTitle.text!)" , "tododscription" : "\(txtOutletToDoDiscription.text!)" , "tododate": "\(txtOutletToDoDate.text!)" , "todotime" : "\(txtOutletToDoTime.text!)"]
-//        let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: datePicker.date)
-//        let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: datepickerTimeSelect.date)
         
-        dateFormatter.dateStyle = DateFormatter.Style.medium
-        dateFormatter.dateFormat = "YYYY-MM-dd"
-        let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: dateFormatter.date(from: txtOutletToDoDate.text!)!)
-        dateFormatter.dateStyle = DateFormatter.Style.medium
-        dateFormatter.dateFormat = "HH:mm"
-        let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: dateFormatter.date(from: txtOutletToDoTime.text!)!)
-        scheduleLocalNotification(dateComponent: dateComponents, timeComponent: timeComponents, notificationTitle: txtoutletToDoTitle.text!, notificationBody: txtOutletToDoDiscription.text!)
-       
+        if isValidetField(){
+            dicToDo = ["todotitle" : "\(txtoutletToDoTitle.text!)" , "tododscription" : "\(txtOutletToDoDiscription.text!)" , "tododate": "\(txtOutletToDoDate.text!)" , "todotime" : "\(txtOutletToDoTime.text!)"]
+            
+            dateFormatter.dateStyle = DateFormatter.Style.medium
+            dateFormatter.dateFormat = "YYYY-MM-dd"
+            let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: dateFormatter.date(from: txtOutletToDoDate.text!)!)
+            dateFormatter.dateStyle = DateFormatter.Style.medium
+            dateFormatter.dateFormat = "HH:mm"
+            let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: dateFormatter.date(from: txtOutletToDoTime.text!)!)
+            scheduleLocalNotification(dateComponent: dateComponents, timeComponent: timeComponents, notificationTitle: txtoutletToDoTitle.text!, notificationBody: txtOutletToDoDiscription.text!)
+           
+            
+            if isEditingToDo
+            {
+                dbHelper.updateRecordByTodoId(todoId: intToDoId, object: dicToDo)
+                self.navigationController?.popViewController(animated: true)
+            }
+            else
+            {
+                dbHelper.insertData(object: dicToDo)
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
         
-        if isEditingToDo
-        {
-            dbHelper.updateRecordByTodoId(todoId: intToDoId, object: dicToDo)
-            self.navigationController?.popViewController(animated: true)
-        }
-        else
-        {
-            dbHelper.insertData(object: dicToDo)
-            self.navigationController?.popViewController(animated: true)
-        }
     }
 
+    func isValidetField()  -> Bool{
+        if (txtoutletToDoTitle.text?.isEmpty == true){
+            showAlert(message: "Please enter todo title")
+            return false
+        }
+        else if txtOutletToDoDate.text?.isEmpty == true{
+            showAlert(message: "Please choose date")
+            return false
+        }else if txtoutletToDoTitle.text?.isEmpty == true{
+            showAlert(message: "Please choose time")
+            return false
+        }else if txtOutletToDoDiscription.text?.isEmpty == true{
+            showAlert(message: "Please enter description")
+            return false
+        }
+        return true
+    }
+    func showAlert(title: String = "Todo", message :String){
+        let alert = UIAlertController(title:title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func scheduleLocalNotification(dateComponent: DateComponents, timeComponent: DateComponents, notificationTitle: String, notificationBody: String)  {
         
         let notificationCenter = UNUserNotificationCenter.current()

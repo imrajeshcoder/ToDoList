@@ -20,24 +20,10 @@ class TODOMainStoryboardViewController: UIViewController, UITableViewDelegate , 
         tblOutlettodoDisplay.dataSource = self
         tblOutlettodoDisplay.delegate = self
         super.viewDidLoad()
-     
-        
-//        dicToDo = ["todotitle" : "Reading" , "tododscription" : "dfgdf fdfgsdfgsd" , "tododate": "2021-02-18" , "todotime" : "08:00:00"]
-//        //dbHelper.insertData(object: dicToDo)
-//        toDoMasterClass = dbHelper.readAllData()
-//        //print(toDoMasterClass)
-//        for item in toDoMasterClass {
-//            print(item.todotitle)
-//            print(item.todoid)
-//        }
-        // Do any additional setup after loading the view.
     }
     
   
     override func viewWillAppear(_ animated: Bool) {
-        
-        dicToDo = ["todotitle" : "Reading" , "tododscription" : "dfgdf fdfgsdfgsd" , "tododate": "2021-02-18" , "todotime" : "08:00:00"]
-        //dbHelper.insertData(object: dicToDo)
         toDoMasterClass = dbHelper.readAllData()
         tblOutlettodoDisplay.reloadData()
         //print(toDoMasterClass)
@@ -88,7 +74,7 @@ class TODOMainStoryboardViewController: UIViewController, UITableViewDelegate , 
                 completionHandler(true)
             }
         })
-        deleteAction.image = UIImage(named: "delete")
+        deleteAction.title = "Delete" //  .image = UIImage(named: "delete")
         deleteAction.backgroundColor = UIColor(red: 255/255, green: 52/255, blue: 52/255, alpha: 1)
         var deleteConfiguration : UISwipeActionsConfiguration
         deleteConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
@@ -116,6 +102,9 @@ class TODOMainStoryboardViewController: UIViewController, UITableViewDelegate , 
             vc.strToDoTime = toDoMasterClass[indexPath.row].todotime
             self.navigationController?.pushViewController(vc, animated: true)
         }
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
     
 
